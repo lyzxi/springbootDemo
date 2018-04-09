@@ -6,6 +6,8 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.TimeUnit;
+
 @Component
 public class RedisService {
 
@@ -31,6 +33,17 @@ public class RedisService {
         return false;
     }
 
+    public boolean setex(final String key, Long timeout, Object value) {
+        try {
+            redisTemplate.opsForValue().set(key, value);
+            redisTemplate.expire(key, timeout, TimeUnit.SECONDS);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public String get(final String key) {
         Object o = redisTemplate.opsForValue().get(key);
         return o != null ? o.toString() : "";
@@ -39,6 +52,10 @@ public class RedisService {
     public String hget(final String key, final String field) {
         Object o = redisTemplate.opsForHash().get(key, field);
         return o != null ? o.toString() : "";
+    }
+
+    public boolean exists(final String key) {
+        return redisTemplate.hasKey(key);
     }
 
 }
