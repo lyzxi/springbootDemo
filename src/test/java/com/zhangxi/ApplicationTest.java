@@ -22,11 +22,8 @@ public class ApplicationTest {
     public void contextLoads() {
         Map<String, Object> map = service.getMobile(1);
         System.out.println(map);
-
         redisService.set("myFirstKey", "zhangxi");
         String firstKey = redisService.get("myFirstKey");
-        String SecondKey = redisService.get("mySecondKey");
         System.out.println("myFirstKey:" + firstKey);
-        System.out.println("mySecondKey:" + SecondKey);
     }
 }
